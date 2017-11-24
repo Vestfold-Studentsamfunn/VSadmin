@@ -1,0 +1,47 @@
+# ----------------------------------------------------------------------
+# ROOT/ folder .htaccess
+# ----------------------------------------------------------------------
+# Laravel Note:
+# Note: Laravel is designed to protect your application code,
+# and local storage by placing only files that are necessarily
+# public in the public folder. It is recommended that you either
+# set the public folder as your site's documentRoot (also known as a web root)
+# or to place the contents of public into your site's root directory
+# and place all of Laravel's other files outside the web root.
+# ----------------------------------------------------------------------
+# If you have no idea or no possibility to edit server's
+# settings (for example at shared hosting) -  This .htaccess file
+# will do all work for you.
+# Just place it into /root folder of your Laravel powered application
+# ----------------------------------------------------------------------
+# This file works with Laravel 3 and 4
+# ----------------------------------------------------------------------
+# This .htaccess file is recommended
+# to be placed into /root folder of
+# your Laravel powered application
+# ----------------------------------------------------------------------
+
+RewriteEngine On
+
+RewriteBase /
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond /public/%{REQUEST_URI} -d
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ /public/$1/
+
+RewriteBase /
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /public/$1
+
+RewriteBase /
+RewriteRule ^(/)?$ /public/index.php [L]
+
+# Prevent viewing of .env file
+<Files .env>
+order allow,deny
+deny from all
+</Files>
+
+
