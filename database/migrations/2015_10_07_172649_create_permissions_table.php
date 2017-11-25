@@ -20,7 +20,7 @@ class CreatePermissionsTable extends Migration
             $table->string('name')->index();
             $table->string('slug')->index();
             $table->text('description')->nullable();
-            $table->timestamps();
+            $table->timestamps()->nullableTimestamps();
         });
     }
 

@@ -90,7 +90,7 @@ class VolunteersUkaController extends Controller
         Activity::log(Auth::user()->getFullName(). ' la til '.$request->name.' som frivillig');
         flash()->success('Frivillig opprettet');
 
-        return \Redirect::action('VolunteersController@edit', $storeVolunteer->id);
+        return \Redirect::action('VolunteersController@edit', ['id' => $storeVolunteer->id]);
     }
 
     /**
@@ -170,7 +170,7 @@ class VolunteersUkaController extends Controller
      */
     public function settings()
     {
-        $selectVolunteerJob   = VolunteerJobs::orderBy('name', 'asc')->lists('name', 'id');
+        $selectVolunteerJob   = VolunteerJobs::orderBy('name', 'asc')->pluck('name', 'id');
 
         $cleanDate = Carbon::now()->subYear();
 

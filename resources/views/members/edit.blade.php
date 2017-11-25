@@ -159,7 +159,7 @@
                                     </button>
                                     <br/>
                                         {!! Form::label('picture','Nytt bilde') !!}
-                                        {!! Form::file('picture', null, ['class' => 'form-control']) !!}
+                                        {!! Form::file('picture') !!}
                                     <br>
                                     <button type="submit" name="updateMemberProfile" class="btn btn-success btn-md">Lagre</button>
                                     <button type="reset" class="btn btn-default btn-md">Nullstill</button>

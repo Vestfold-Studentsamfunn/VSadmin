@@ -76,8 +76,8 @@ class MembersController extends Controller
      */
     public function create()
     {
-        $selectDepartment   = Departments::lists('full_name', 'short_name');
-        $selectVipGroup     = VipGroups::lists('name', 'name');
+        $selectDepartment   = Departments::pluck('full_name', 'short_name');
+        $selectVipGroup     = VipGroups::pluck('name', 'name');
 
         return view('members.create', compact('selectDepartment', 'selectVipGroup'));
     }
@@ -115,7 +115,7 @@ class MembersController extends Controller
         $storeMember->save();
 
         flash()->success('Medlem opprettet');
-        return \Redirect::action('MembersController@edit', $storeMember->id);
+        return \Redirect::action('MembersController@edit', ['id' => $storeMember->id]);
     }
 
     /**
@@ -141,8 +141,8 @@ class MembersController extends Controller
 
         $member = Members::find($id);
 
-        $selectDepartment   = Departments::lists('full_name', 'short_name');
-        $selectVipGroup     = VipGroups::lists('name', 'name');
+        $selectDepartment   = Departments::pluck('full_name', 'short_name');
+        $selectVipGroup     = VipGroups::pluck('name', 'name');
 
         $memberAge = Carbon::now()->diffInYears($member->birthDate);
 
@@ -339,8 +339,8 @@ class MembersController extends Controller
      */
     public function settings()
     {
-        $selectDepartment   = Departments::lists('full_name', 'short_name');
-        $selectVipGroup     = VipGroups::lists('name', 'name');
+        $selectDepartment   = Departments::pluck('full_name', 'short_name');
+        $selectVipGroup     = VipGroups::pluck('name', 'name');
 
         $members =      Members::whereIn('payed', ['-1', '1'])
                                ->count();
@@ -461,8 +461,8 @@ class MembersController extends Controller
                                         ->whereNotIn('noEmail', ['1'])
                                         ->get();
 
-        $selectDepartment   = Departments::lists('full_name', 'short_name');
-        $selectVipGroup     = VipGroups::lists('name', 'name');
+        $selectDepartment   = Departments::pluck('full_name', 'short_name');
+        $selectVipGroup     = VipGroups::pluck('name', 'name');
 
         return view('members.emails', compact('members', 'selectDepartment', 'selectVipGroup'));
     }
@@ -480,8 +480,8 @@ class MembersController extends Controller
                                         ->whereNotIn('noPhone', ['1'])
                                         ->get();
 
-        $selectDepartment   = Departments::lists('full_name', 'short_name');
-        $selectVipGroup     = VipGroups::lists('name', 'name');
+        $selectDepartment   = Departments::pluck('full_name', 'short_name');
+        $selectVipGroup     = VipGroups::pluck('name', 'name');
 
         return view('members.phones', compact('members', 'selectDepartment', 'selectVipGroup'));
     }
@@ -526,26 +526,26 @@ class MembersController extends Controller
             ->orWhereIn('vipGroup', ['Æresmedlem'])
             ->select('vipGroup', DB::raw('count(*) as total'))
             ->groupBy('vipGroup')
-            ->lists('total','vipGroup')->all();
+            ->pluck('total','vipGroup')->all();
 
         $payments = Members::whereIn('payed', ['-1', '1'])
             ->whereNotIn('vipGroup', ['Ingen'])
             ->orWhereIn('vipGroup', ['Æresmedlem'])
             ->select('vipGroup', DB::raw('count(*) as total'))
             ->groupBy('vipGroup')
-            ->lists('total','vipGroup')->all();
+            ->pluck('total','vipGroup')->all();
 
         $vipCount = Members::whereIn('payed', ['-1', '1'])
             ->whereNotIn('vipGroup', ['Ingen'])
             ->orWhereIn('vipGroup', ['Æresmedlem'])
             ->select('vipGroup', DB::raw('count(*) as total'))
             ->groupBy('vipGroup')
-            ->lists('total','vipGroup')->all();
+            ->pluck('total','vipGroup')->all();
 
         $banned = Members::whereIn('payed', ['-1', '1'])
             ->whereIn('banned', ['1'])
             ->orderBy('banned_to', 'desc')
-            ->lists('banned_to','name')
+            ->pluck('banned_to','name')
             ->all();
 
         $halfYear =     Members::whereIn('payed', ['-1', '1'])

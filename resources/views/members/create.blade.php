@@ -61,7 +61,7 @@
                                     <option>2</option>
                                 </select>
                                 {!! Form::label('picture','Bilde',array('id'=>'','class'=>'')) !!}
-                                {!! Form::file('picture','',array('id'=>'','class'=>'')) !!}
+                                {!! Form::file('picture') !!}
                             </div>
                             <button type="submit" class="btn btn-primary">Lagre</button>
                             <button type="reset" class="btn btn-default">Reset</button>
