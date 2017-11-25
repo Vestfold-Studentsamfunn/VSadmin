@@ -62,7 +62,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Innstillinger</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i> Logg ut</a>
+                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logg ut</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->

@@ -31,7 +31,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-lg-8">
-                        {!! Form::open(['role' => 'form', 'url' => '/auth/register']) !!}
+                        {!! Form::open(['role' => 'form', 'url' => '/register']) !!}
 
 						<div class='form-group'>
                             {!! Form::label('email', 'Epost (brukernavn)') !!}

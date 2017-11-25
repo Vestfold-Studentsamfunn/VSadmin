@@ -16,8 +16,7 @@ class UserController extends Controller {
 
     public function __construct()
     {
-        /** @noinspection PhpDeprecationInspection */
-        $this->beforeFilter('auth');
+        $this->middleware('auth');
     }
 
     /**

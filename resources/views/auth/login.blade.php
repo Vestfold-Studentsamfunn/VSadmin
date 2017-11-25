@@ -43,7 +43,7 @@
                 </div>
                 <div class="panel-body">
                     @include('errors.errors')
-                    <form role="form" method="POST" action="/auth/login" id="login">
+                    <form role="form" method="POST" action="/login" id="login">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <fieldset>
                             <div class="form-group">
