@@ -56,6 +56,10 @@ Homestead.json
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 
+# IDE helpers
+.phpstorm.meta.php
+_ide_helper.php
+
 # Gradle:
 .idea/**/gradle.xml
 .idea/**/libraries
