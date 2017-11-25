@@ -5,7 +5,6 @@
 /vendor
 node_modules/
 npm-debug.log
-/public/tmp
 
 # Laravel 4 specific
 bootstrap/compiled.php
@@ -125,3 +124,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/linux,windows,laravel,phpstorm+all
+public/tmp/
