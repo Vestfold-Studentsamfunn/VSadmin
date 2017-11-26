@@ -25,7 +25,7 @@ use Carbon\Carbon;
 
 use Intervention\Image\Facades\Image;
 
-use yajra\Datatables\Datatables;
+use Yajra\DataTables\Datatables;
 
 use Activity;
 use Auth;

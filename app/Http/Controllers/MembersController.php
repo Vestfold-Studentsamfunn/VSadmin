@@ -25,7 +25,7 @@ use Illuminate\Http\Response;
 use Carbon\Carbon;
 
 use Intervention\Image\Facades\Image;
-use yajra\Datatables\Datatables;
+use Yajra\DataTables\DataTables;
 
 class MembersController extends Controller
 {
