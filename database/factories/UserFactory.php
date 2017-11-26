@@ -1,4 +1,7 @@
 <?php
+
+use Faker\Generator as Faker;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -9,7 +12,7 @@
 | database. Just tell the factory how a default model should look.
 |
 */
-$factory->define(App\Members::class, function (Faker\Generator $faker) {
+$factory->define(App\Members::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'phone' => $faker->phoneNumber,

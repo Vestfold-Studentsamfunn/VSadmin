@@ -16,7 +16,5 @@ class DatabaseSeeder extends Seeder
         DB::table('membersData')->delete();
         factory(App\Members::class, 750)->create();
         $this->command->info('Member table seeded!');
-
-        //$this->command->info('Hemsedal table seeded!');
     }
 }
