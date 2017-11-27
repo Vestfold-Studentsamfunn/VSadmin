@@ -22,8 +22,8 @@
         "symfony/css-selector": "3.1.*",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",
-        "phpunit/phpunit": "~6.0",
-        "phpspec/phpspec": "~2.1",
+        "phpunit/phpunit": "^6.4",
+        "phpspec/phpspec": "^4.2",
         "filp/whoops": "~2.0"
     },
     "autoload": {
