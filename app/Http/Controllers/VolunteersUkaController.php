@@ -7,7 +7,7 @@ use App\VolunteerUka;
 use App\Http\Requests;
 
 use DB;
-use Input;
+use Illuminate\Support\Facades\Input;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

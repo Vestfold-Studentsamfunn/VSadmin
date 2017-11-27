@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Http\Requests;
 use Auth;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Response;
 use Kodeine\Acl\Models\Eloquent\Role;
 

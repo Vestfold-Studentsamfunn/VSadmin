@@ -16,7 +16,7 @@ use App\Http\Requests\UpdateMemberSettingsRequest;
 
 use Auth;
 use DB;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Activity;
 
 use Illuminate\Http\Request;

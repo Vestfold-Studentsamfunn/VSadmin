@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SMSValidator;
 
 use Exception;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Request;
 
 use App\Http\Requests;
