@@ -391,8 +391,11 @@ class MembersController extends Controller
                 flash()->info('VIP statusen for samtlige medlemmer er nullstillt');
             }
             elseif ($request->memberType == 'allMembers'){
-                Members::whereIn('payed', ['-1', '1'])
+                Members::whereIn('payed', ['-1'])
                     ->update(['payed' => '2']);
+
+                Members::whereIn('payed', ['1'])
+                    ->update(['payed' => '0']);
 
                 //Activity::log(Auth::user()->getFullName(). ' nullstillte betalingsstatus for alle medlemmer');
                 flash()->info('Betalingsstatus for samtlige medlemmer er nullstillt');
