@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-use Activity;
+//use Activity;
 use Auth;
 
 use Carbon\Carbon;
@@ -87,7 +87,7 @@ class VolunteersUkaController extends Controller
 
         $storeVolunteer->volunteerJobs()->sync($request->jobs, false);
 
-        Activity::log(Auth::user()->getFullName(). ' la til '.$request->name.' som frivillig');
+        //Activity::log(Auth::user()->getFullName(). ' la til '.$request->name.' som frivillig');
         flash()->success('Frivillig opprettet');
 
         return \Redirect::action('VolunteersController@edit', ['id' => $storeVolunteer->id]);
@@ -184,7 +184,7 @@ class VolunteersUkaController extends Controller
             VolunteerJobs::where('id', $request->selectedVolunteerJob)
                 ->update(['name' => $request->updateJobName]);
 
-            Activity::log(Auth::user()->getFullName(). ' oppdaterte frivilligjobben '.$request->selectedVolunteerJob);
+            //Activity::log(Auth::user()->getFullName(). ' oppdaterte frivilligjobben '.$request->selectedVolunteerJob);
             flash()->success('Frivilligjobben ble oppdatert');
         }
 
@@ -210,7 +210,7 @@ class VolunteersUkaController extends Controller
         {
             VolunteerJobs::create(['name' => $request->addVolunteerJobName]);
 
-            Activity::log(Auth::user()->getFullName(). ' la til frivilligjobben '.$request->addVolunteerJobName);
+            //Activity::log(Auth::user()->getFullName(). ' la til frivilligjobben '.$request->addVolunteerJobName);
             flash()->success('Frivilligjobb lagt til');
         }
 
@@ -223,7 +223,7 @@ class VolunteersUkaController extends Controller
         {
             VolunteerJobs::where('id', $request->deleteVolunteerJob)->delete();
 
-            Activity::log(Auth::user()->getFullName(). ' fjernet frivilligjobben '.$request->deleteVolunteerJob);
+            //Activity::log(Auth::user()->getFullName(). ' fjernet frivilligjobben '.$request->deleteVolunteerJob);
             flash()->success('Frivilligjobben ble fjernet');
         }
 

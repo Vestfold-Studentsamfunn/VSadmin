@@ -10,7 +10,7 @@ use Illuminate\Http\Response;
 use Kodeine\Acl\Models\Eloquent\Role;
 
 use View;
-use Activity;
+//use Activity;
 
 class UserController extends Controller {
 
@@ -95,7 +95,7 @@ class UserController extends Controller {
 
         $user->save();
 
-        Activity::log(Auth::user()->getFullName(). ' oppdaterte brukeren '.$user);
+        //Activity::log(Auth::user()->getFullName(). ' oppdaterte brukeren '.$user);
 
         return \Redirect::to('/settings/users');
     }
@@ -110,7 +110,7 @@ class UserController extends Controller {
     {
         $user = User::find($id)->getFullName();
         User::destroy($id);
-        Activity::log(Auth::user()->getFullName(). ' slettet brukeren '.$user);
+        //Activity::log(Auth::user()->getFullName(). ' slettet brukeren '.$user);
 
         return \Redirect::to('/settings/users');
     }

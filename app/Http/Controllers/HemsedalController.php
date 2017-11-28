@@ -27,7 +27,7 @@ use Intervention\Image\Facades\Image;
 
 use Yajra\DataTables\Datatables;
 
-use Activity;
+use //Activity;
 use Auth;
 
 class HemsedalController extends Controller
@@ -183,7 +183,7 @@ class HemsedalController extends Controller
             ->update(['member_id' => $request->member_id, 'name' => $request->name, 'phone' => $request->phone,
                       'email' => $request->email, 'sweaterSize' => $request->sweaterSize, 'busHome' => $request->busHome, 'room' => $request->room]);
 
-        Activity::log(Auth::user()->getFullName(). ' oppdaterte informasjon om Hemsedalpåmeldt: '.$request->name);
+        //Activity::log(Auth::user()->getFullName(). ' oppdaterte informasjon om Hemsedalpåmeldt: '.$request->name);
         flash()->success('Informasjon oppdatert.');
 
         return \Redirect::back();
@@ -228,7 +228,7 @@ class HemsedalController extends Controller
 
             $participant->save();
 
-            Activity::log(Auth::user()->getFullName(). ' registrerte depositum for Hemsedalpåmeldt: '.$participant->name);
+            //Activity::log(Auth::user()->getFullName(). ' registrerte depositum for Hemsedalpåmeldt: '.$participant->name);
             flash()->success('Betaling av depositum registrert!');
 
         }
@@ -241,7 +241,7 @@ class HemsedalController extends Controller
 
             $participant->save();
 
-            Activity::log(Auth::user()->getFullName(). ' registrerte sluttsum for Hemsedalpåmeldt: '.$participant->name);
+            //Activity::log(Auth::user()->getFullName(). ' registrerte sluttsum for Hemsedalpåmeldt: '.$participant->name);
             flash()->success('Betaling av sluttsum registrert!');
 
         }

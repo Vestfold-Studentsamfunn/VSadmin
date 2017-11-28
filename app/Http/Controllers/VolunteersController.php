@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-use Activity;
+//use Activity;
 use Auth;
 
 use Carbon\Carbon;
@@ -108,7 +108,7 @@ class VolunteersController extends Controller
 
         $storeVolunteer->volunteerJobs()->sync($request->jobs, false);
 
-        Activity::log(Auth::user()->getFullName(). ' la til '.$request->name.' som frivillig');
+        //Activity::log(Auth::user()->getFullName(). ' la til '.$request->name.' som frivillig');
         flash()->success('Frivillig opprettet');
 
         return \Redirect::action('VolunteersController@edit', ['id' => $storeVolunteer->id]);
@@ -165,7 +165,7 @@ class VolunteersController extends Controller
 
             $storeVolunteer->volunteerJobs()->sync($request->jobs);
 
-            Activity::log(Auth::user()->getFullName(). ' oppdaterte informasjonen om frivillig '.$storeVolunteer->name);
+            //Activity::log(Auth::user()->getFullName(). ' oppdaterte informasjonen om frivillig '.$storeVolunteer->name);
             flash()->success('Frivillig oppdtert');
         }
         else {
@@ -208,7 +208,7 @@ class VolunteersController extends Controller
         $volunteer->volunteerJobs()->detach();
         $volunteer->delete();
 
-        Activity::log(Auth::user()->getFullName(). ' fjernet '.$volunteer->name.' som frivillig');
+        //Activity::log(Auth::user()->getFullName(). ' fjernet '.$volunteer->name.' som frivillig');
         flash()->success('Den frivillige ble fjernet!');
 
         return \Redirect::action('VolunteersController@index');
@@ -246,7 +246,7 @@ class VolunteersController extends Controller
             VolunteerJobs::where('id', $request->selectedVolunteerJob)
                 ->update(['name' => $request->updateJobName]);
 
-            Activity::log(Auth::user()->getFullName(). ' oppdaterte frivilligjobben '.$request->selectedVolunteerJob);
+            //Activity::log(Auth::user()->getFullName(). ' oppdaterte frivilligjobben '.$request->selectedVolunteerJob);
             flash()->success('Frivilligjobben ble oppdatert');
         }
 
@@ -272,7 +272,7 @@ class VolunteersController extends Controller
         {
             VolunteerJobs::create(['name' => $request->addVolunteerJobName]);
 
-            Activity::log(Auth::user()->getFullName(). ' la til frivilligjobben '.$request->addVolunteerJobName);
+            //Activity::log(Auth::user()->getFullName(). ' la til frivilligjobben '.$request->addVolunteerJobName);
             flash()->success('Frivilligjobb lagt til');
         }
 
@@ -285,7 +285,7 @@ class VolunteersController extends Controller
         {
             VolunteerJobs::where('id', $request->deleteVolunteerJob)->delete();
 
-            Activity::log(Auth::user()->getFullName(). ' fjernet frivilligjobben '.$request->deleteVolunteerJob);
+            //Activity::log(Auth::user()->getFullName(). ' fjernet frivilligjobben '.$request->deleteVolunteerJob);
             flash()->success('Frivilligjobben ble fjernet');
         }
 

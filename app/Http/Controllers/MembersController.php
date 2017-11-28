@@ -17,7 +17,7 @@ use App\Http\Requests\UpdateMemberSettingsRequest;
 use Auth;
 use DB;
 use Illuminate\Support\Facades\Input;
-use Activity;
+//use Activity;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -200,7 +200,7 @@ class MembersController extends Controller
                 @unlink($resizedImagePath);
             }
 
-            Activity::log(Auth::user()->getFullName(). ' oppdaterte infomasjonen om medlem '.$id);
+            //Activity::log(Auth::user()->getFullName(). ' oppdaterte infomasjonen om medlem '.$id);
             flash()->success('Informasjon oppdatert');
         }
 
@@ -257,14 +257,14 @@ class MembersController extends Controller
             }
 
             $member->payedDate = Carbon::now();
-            Activity::log(Auth::user()->getFullName(). ' registrerte betaling av medlem '.$id);
+            //Activity::log(Auth::user()->getFullName(). ' registrerte betaling av medlem '.$id);
             flash()->success('Betaling registrert!');
         }
         elseif ($request->printNewCard == 1)
         {
             $member->payed      = 1;
             $member->cardNumber = 0;
-            Activity::log(Auth::user()->getFullName(). ' skrev ut nytt kort for medlem  '.$id);
+            //Activity::log(Auth::user()->getFullName(). ' skrev ut nytt kort for medlem  '.$id);
             flash()->info('Nytt kort vil bli skrevet ut');
         }
 
@@ -298,7 +298,7 @@ class MembersController extends Controller
 
         $memberSettings->save();
 
-        Activity::log(Auth::user()->getFullName(). ' oppdaterte infomasjonen om medlem '.$id);
+        //Activity::log(Auth::user()->getFullName(). ' oppdaterte infomasjonen om medlem '.$id);
         flash()->success('Informasjon oppdatert');
 
         return \Redirect::back();
@@ -366,7 +366,7 @@ class MembersController extends Controller
             Members::where('department', $request->selectedDepartment)
                 ->update(['department' => $request->updateDepartmentShortName]);
 
-            Activity::log(Auth::user()->getFullName(). ' oppdaterte informasjonen om fakultetet '.$request->selectedDepartment);
+            //Activity::log(Auth::user()->getFullName(). ' oppdaterte informasjonen om fakultetet '.$request->selectedDepartment);
             flash()->success('Fakultetet ble lagret og eksisterende medlemmer er oppdatert');
         }
 
@@ -378,7 +378,7 @@ class MembersController extends Controller
             Members::where('vipGroup', $request->selectedVipGroup)
                 ->update(['vipGroup' => $request->updateVipGroup]);
 
-            Activity::log(Auth::user()->getFullName(). ' oppdaterte informasjonen om VIP-gruppen '.$request->selectedVipGroup);
+            //Activity::log(Auth::user()->getFullName(). ' oppdaterte informasjonen om VIP-gruppen '.$request->selectedVipGroup);
             flash()->success('VIP gruppen ble lagret og eksisterende medlemmer er oppdatert');
         }
 
@@ -387,14 +387,14 @@ class MembersController extends Controller
             if ($request->memberType == 'vip'){
                 Members::whereNotIn('vipGroup', ['Ingen', 'Æresmedlem'])->update(['vipGroup' => 'Ingen']);
 
-                Activity::log(Auth::user()->getFullName(). ' nullstillte alle VIP');
+                //Activity::log(Auth::user()->getFullName(). ' nullstillte alle VIP');
                 flash()->info('VIP statusen for samtlige medlemmer er nullstillt');
             }
             elseif ($request->memberType == 'allMembers'){
                 Members::whereIn('payed', ['-1', '1'])
                     ->update(['payed' => '2']);
 
-                Activity::log(Auth::user()->getFullName(). ' nullstillte betalingsstatus for alle medlemmer');
+                //Activity::log(Auth::user()->getFullName(). ' nullstillte betalingsstatus for alle medlemmer');
                 flash()->info('Betalingsstatus for samtlige medlemmer er nullstillt');
             }
             elseif ($request->memberType == 'halfYear'){
@@ -402,7 +402,7 @@ class MembersController extends Controller
                     ->whereIn('semesters', ['1'])
                     ->update(['payed' => '2']);
 
-                Activity::log(Auth::user()->getFullName(). ' nullstillte betalingsstatus for alle halvtårsmedlemmer');
+                //Activity::log(Auth::user()->getFullName(). ' nullstillte betalingsstatus for alle halvtårsmedlemmer');
                 flash()->info('Betalingsstatusen for halvtårsmedlemmer er nullstillt');
             }
         }
@@ -415,14 +415,14 @@ class MembersController extends Controller
         if ($request->_form == 'addFaculty')
         {
             Departments::create(['short_name' => $request->addDepartmentShortName, 'full_name' => $request->addDepartmentFullName]);
-            Activity::log(Auth::user()->getFullName(). ' la til fakultetet '.$request->addDepartmentShortName);
+            //Activity::log(Auth::user()->getFullName(). ' la til fakultetet '.$request->addDepartmentShortName);
             flash()->success('Fakultet lagt til');
         }
 
         if ($request->_form == 'addVipGroup')
         {
             VipGroups::create(['name' => $request->addVipGroup]);
-            Activity::log(Auth::user()->getFullName(). ' la til VIP-gruppen '.$request->addVipGroup);
+            //Activity::log(Auth::user()->getFullName(). ' la til VIP-gruppen '.$request->addVipGroup);
             flash()->success('VIP gruppe lagt til');
         }
 
@@ -434,14 +434,14 @@ class MembersController extends Controller
         if ($request->_form == 'deleteFaculty')
         {
             Departments::where('short_name', $request->deleteDepartment)->delete();
-            Activity::log(Auth::user()->getFullName(). ' slettet fakultetet '.$request->deleteDepartment);
+            //Activity::log(Auth::user()->getFullName(). ' slettet fakultetet '.$request->deleteDepartment);
             flash()->success('Fakultet ble slettet');
         }
 
         if ($request->_form == 'deleteVipGroup')
         {
             VipGroups::where('name', $request->deleteVipGroup)->delete();
-            Activity::log(Auth::user()->getFullName(). ' slettet VIP-gruppen '.$request->deleteVipGroup);
+            //Activity::log(Auth::user()->getFullName(). ' slettet VIP-gruppen '.$request->deleteVipGroup);
             flash()->success('VIP gruppen ble slettet');
         }
 

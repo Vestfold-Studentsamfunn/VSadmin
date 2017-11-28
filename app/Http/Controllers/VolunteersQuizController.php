@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-use Activity;
+//use Activity;
 use Auth;
 
 use Carbon\Carbon;
@@ -87,7 +87,7 @@ class VolunteersQuizController extends Controller
 
         $storeVolunteer->volunteerJobs()->sync($request->jobs, false);
 
-        Activity::log(Auth::user()->getFullName(). ' la til '.$request->name.' som frivillig');
+        //Activity::log(Auth::user()->getFullName(). ' la til '.$request->name.' som frivillig');
         flash()->success('Frivillig opprettet');
 
         return \Redirect::action('VolunteersController@edit', ['id' => $storeVolunteer->id]);
