@@ -26,6 +26,10 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
+                    <a href="{{route('uka.create')}}" class="btn btn-success"><i class="glyphicon glyphicon-user fa-fw"></i> Registrer ny frivillig</a>
+                    <a href="{{route('uka.emails')}}" class="btn btn-info"><i class="glyphicon glyphicon-envelope fa-fw"></i> E-postliste</a>
+                    <a href="{{route('uka.phones')}}" class="btn btn-info"><i class="glyphicon glyphicon-phone fa-fw"></i> Telefonliste</a>
+                    <br><br>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Viser alle registrerte frivillige til UKA.
@@ -44,10 +48,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($volunteersUka as $volunteer)
+                                        @foreach ($ukaVolunteers as $volunteer)
                                         <tr>
                                             <td>
-                                                <a href="{{route('volunteer.uka.edit', ['id' => $volunteer->id])}}" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> Vis info</a>
+                                                <a href="{{route('uka.edit', ['id' => $volunteer->id])}}" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> Vis info</a>
                                             </td>
                                             <td>{{ $volunteer->name }}</td>
                                             <td>{{ $volunteer->phone }}</td>

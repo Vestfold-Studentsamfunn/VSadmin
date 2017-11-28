@@ -45,7 +45,8 @@
                                 <div class="col-lg-8">
                                     <br/>
                                     <dl class="dl-horizontal">
-                                        {!! Form::model($volunteerUka, array('route' => array('volunteer.uka.update', 'id' => $volunteerUka->id), 'files' => false)) !!}
+                                        {!! Form::model($volunteerUka, array('route' => array('uka.update', 'id' => $volunteerUka->id), 'files' => false)) !!}
+
                                         {!! Form::label('name', 'Navn') !!}
                                         {!! Form::text('name', null, ['class' => 'form-control' ]) !!}
 
@@ -59,8 +60,8 @@
                                         {!! Form::text('jobs', null, ['class' => 'form-control' ]) !!}
                                         <br>
                                         <br>
-                                        <button type="submit" name="updateUkaVolunteerProfile" class="btn btn-success btn-md">Lagre</button>
-                                        <button type="reset" class="btn btn-default btn-md">Nullstill</button>
+                                        {!! Form::submit('Lagre', ['name'=>'updateUkaVolunteer', 'class'=>'btn btn-success btn-md']) !!}
+                                        {!! Form::button('Nullstill', ['type'=>'reset', 'class'=>'btn btn-default btn-md']) !!}
 
                                         {!! Form::close() !!}
                                     </dl>
@@ -87,11 +88,12 @@
                                                     Er du sikker på at du vil fjerne den frivillige? Dette kan ikke gjøres om på!
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <form role="form" method="POST" action="{{ URL::to('volunteers/uka/delete') }}/{{ $volunteerUka->id }}" id="volunteerUkaDelete" accept-charset="UTF-8">
-                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
-                                                        <button type="submit" class="btn btn-danger">Fjern frivillig!</button>
-                                                    </form>
+                                                    {!! Form::open(array('route' => array('uka.delete', 'id' => $volunteerUka->id), 'files' => false)) !!}
+
+                                                    {!! Form::button('Avbryt', ['name'=>'updateUkaVolunteer', 'class'=>'btn btn-default', 'data-dismiss'=>'modal']) !!}
+                                                    {!! Form::submit('Fjern frivillig!', ['type'=>'reset', 'class'=>'btn btn-danger']) !!}
+
+                                                    {!! Form::close() !!}
                                                 </div>
                                             </div>
                                             <!-- /.modal-content -->
@@ -112,6 +114,9 @@
                 <!-- /.row (nested) -->
             </div>
             <!-- /.panel-body -->
+            <div class="panel-footer">
+                Lagt til: {!! $volunteerUka->created_at->format('d.m.Y') !!}
+            </div>
         </div>
         <!-- /.panel -->
     </div>

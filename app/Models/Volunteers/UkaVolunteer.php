@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\Volunteers;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VolunteerUka extends Model
+class UkaVolunteer extends Model
 {
     protected $table = 'volunteerUKA';
 

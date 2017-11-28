@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Medlemmer')
+@section('title', 'Epostliste - UKA frivillige')
 
 @section('header')
 <!-- Timeline CSS -->
@@ -26,7 +26,7 @@
                             {{ Session::get('message') }}
                         </div>
                     @endif
-                    <h1 class="page-header">Eposter</h1>
+                    <h1 class="page-header">Epostliste - UKA frivillige</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -35,11 +35,11 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            {{ $volunteers->count() }} eposter funnet.
+                            {{ $ukaVolunteers->count() }} eposter funnet.
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            @foreach ($volunteers as $volunteer)
+                            @foreach ($ukaVolunteers as $volunteer)
                                 {{ $volunteer->email }};
                             @endforeach
                         </div>

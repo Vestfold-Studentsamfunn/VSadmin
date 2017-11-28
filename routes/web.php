@@ -82,20 +82,15 @@ Route::group(['middleware' => 'auth'], function()
             Route::post('delete/{id}', 'Volunteers\QuizmasterController@destroy')->name('quiz.delete');
         });
 
-        Route::group(['prefix' => 'uka'], function () {
-            Route::get('index', 'VolunteersUkaController@index');
-            Route::get('details', 'VolunteersUkaController@details');
-            Route::get('create', 'VolunteersUkaController@create');
-            Route::post('delete/{id}', 'VolunteersUkaController@destroy');
-            Route::post('store', 'VolunteersUkaController@store');
-            Route::get('edit', [
-                'as' => 'volunteer.uka.edit',
-                'uses' => 'VolunteersUkaController@edit'
-            ]);
-            Route::post('update/{id}', [
-                'as' => 'volunteer.uka.update',
-                'uses' => 'VolunteersUkaController@update'
-            ]);
+        Route::group(['prefix'=>'uka'], function () {
+            Route::get('index', 'Volunteers\UkaVolunteerController@index')->name('uka.index');
+            Route::get('create', 'Volunteers\UkaVolunteerController@create')->name('uka.create');
+            Route::get('edit/{id}', 'Volunteers\UkaVolunteerController@edit')->name('uka.edit');
+            Route::get('emails', 'Volunteers\UkaVolunteerController@listEmails')->name('uka.emails');
+            Route::get('phones', 'Volunteers\UkaVolunteerController@listPhones')->name('uka.phones');
+            Route::post('store', 'Volunteers\UkaVolunteerController@store')->name('uka.store');
+            Route::post('update/{id}', 'Volunteers\UkaVolunteerController@update')->name('uka.update');
+            Route::post('delete/{id}', 'Volunteers\UkaVolunteerController@destroy')->name('uka.delete');
         });
     });
 
