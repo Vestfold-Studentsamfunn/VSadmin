@@ -70,20 +70,16 @@ Route::group(['middleware' => 'auth'], function()
         Route::post('update/{id}', 'VolunteersController@update');
         Route::post('store', 'VolunteersController@store');
         Route::post('delete/{id}', 'VolunteersController@destroy');
+
         Route::group(['prefix' => 'quiz'], function () {
-            Route::get('index', 'VolunteersQuizController@index');
-            Route::get('details', 'VolunteersQuizController@details');
-            Route::get('create', 'VolunteersQuizController@create');
-            Route::post('delete/{id}', 'VolunteersQuizController@destroy');
-            Route::post('store', 'VolunteersQuizController@store');
-            Route::get('edit', [
-                'as' => 'volunteer.quiz.edit',
-                'uses' => 'VolunteersQuizController@edit'
-            ]);
-            Route::post('update/{id}', [
-                'as' => 'volunteer.quiz.update',
-                'uses' => 'VolunteersQuizController@update'
-            ]);
+            Route::get('index', 'Volunteers\QuizmasterController@index')->name('quiz.index');
+            Route::get('create', 'Volunteers\QuizmasterController@create')->name('quiz.create');
+            Route::get('edit/{id}', 'Volunteers\QuizmasterController@edit')->name('quiz.edit');
+            Route::get('emails', 'Volunteers\QuizmasterController@listEmails')->name('quiz.emails');
+            Route::get('phones', 'Volunteers\QuizmasterController@listPhones')->name('quiz.phones');
+            Route::post('store', 'Volunteers\QuizmasterController@store')->name('quiz.store');
+            Route::post('update/{id}', 'Volunteers\QuizmasterController@update')->name('quiz.update');
+            Route::post('delete/{id}', 'Volunteers\QuizmasterController@destroy')->name('quiz.delete');
         });
 
         Route::group(['prefix' => 'uka'], function () {

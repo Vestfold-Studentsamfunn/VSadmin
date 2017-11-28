@@ -26,6 +26,10 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
+                    <a href="{{route('quiz.create')}}" class="btn btn-success"><i class="glyphicon glyphicon-user fa-fw"></i> Registrer ny Quizmaster</a>
+                    <a href="{{route('quiz.emails')}}" class="btn btn-info"><i class="glyphicon glyphicon-envelope fa-fw"></i> E-postliste</a>
+                    <a href="{{route('quiz.phones')}}" class="btn btn-info"><i class="glyphicon glyphicon-phone fa-fw"></i> Telefonliste</a>
+                    <br><br>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Viser alle registrerte quizmastere.
@@ -33,7 +37,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                                <table class="table table-hover" id="volunteersQuizTable">
+                                <table class="table table-hover" id="quizmasterTable">
                                     <thead>
                                         <tr>
                                             <th>&nbsp;</th>
@@ -47,7 +51,7 @@
                                         @foreach ($quizmasters as $quizmaster)
                                         <tr>
                                             <td>
-                                                <a href="{{route('volunteer.quiz.edit', ['id' => $quizmaster->id])}}" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> Vis info</a>
+                                                <a href="{{route('quiz.edit', ['id' => $quizmaster->id])}}" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> Vis info</a>
                                             </td>
                                             <td>{{ $quizmaster->name_q1 }}</td>
                                             <td>{{ $quizmaster->phone_q1 }}</td>
@@ -75,12 +79,13 @@
 {!! HTML::script('bower_components/datatables/media/js/jquery.dataTables.min.js') !!}
 {!! HTML::script('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js') !!}
 
-    <!-- Page-Level Scripts - Tables -->
+    <!-- Page-Level Scripts - quizmasterTable -->
     <script>
     $(document).ready(function() {
-        $('#volunteersQuizTable').DataTable({
+        $('#quizmasterTable').DataTable({
             responsive: true,
             order: [[ 1, "asc" ]],
+            pageLength: 25,
             "columnDefs": [
                 { "orderable": false, "targets": 0 }
             ]

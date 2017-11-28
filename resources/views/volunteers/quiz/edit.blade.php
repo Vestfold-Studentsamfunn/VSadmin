@@ -23,53 +23,56 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ $quizmaster->name_q1 }} @if ($quizmaster->name_q1 != '') & {{ $quizmaster->name_q2 }} @endif
+                {{ $quizmaster->name_q1 }} @if ($quizmaster->name_q2 != '') & {{ $quizmaster->name_q2 }} @endif
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-                    @include('errors.errors')
-                    @include('flash::message')
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">Rediger info</a>
-                        </li>
-                        <li><a href="#settings" data-toggle="tab">Innstillinger</a>
-                        </li>
-                    </ul>
+                        @include('errors.errors')
+                        @include('flash::message')
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#home" data-toggle="tab">Rediger info</a>
+                            </li>
+                            <li><a href="#settings" data-toggle="tab">Innstillinger</a>
+                            </li>
+                        </ul>
 
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane fade in active" id="home">
-                                <div class="col-lg-8">
-                                    <br/>
-                                    <dl class="dl-horizontal">
-                                        {!! Form::model($quizmaster, array('route' => array('volunteer.quiz.update', 'id' => $quizmaster->id), 'files' => false)) !!}
-                                        {!! Form::label('name_q1', 'Navn') !!}
-                                        {!! Form::text('name_q1', null, ['class' => 'form-control' ]) !!}
+                                <div class="col-lg-6">
+                                    <div class="col-md-12">
+                                        <br/>
+                                        <dl class="dl-horizontal">
+                                            {!! Form::model($quizmaster, array('route' => array('quiz.update', 'id' => $quizmaster->id), 'files' => false)) !!}
 
-                                        {!! Form::label('phone_q1', 'Telefon') !!}
-                                        {!! Form::text('phone_q1', null, ['class' => 'form-control' ]) !!}
+                                            {!! Form::label('name_q1', 'Navn') !!}
+                                            {!! Form::text('name_q1', null, ['class' => 'form-control' ]) !!}
 
-                                        {!! Form::label('email_q1', 'E-post') !!}
-                                        {!! Form::email('email_q1', null, ['class' => 'form-control' ]) !!}
-                                        <hr>
-                                        {!! Form::label('name_q2', 'Navn') !!}
-                                        {!! Form::text('name_q2', null, ['class' => 'form-control' ]) !!}
+                                            {!! Form::label('phone_q1', 'Telefon') !!}
+                                            {!! Form::text('phone_q1', null, ['class' => 'form-control' ]) !!}
 
-                                        {!! Form::label('phone_q2', 'Telefon') !!}
-                                        {!! Form::text('phone_q2', null, ['class' => 'form-control' ]) !!}
+                                            {!! Form::label('email_q1', 'E-post') !!}
+                                            {!! Form::email('email_q1', null, ['class' => 'form-control' ]) !!}
+                                            <hr>
+                                            {!! Form::label('name_q2', 'Navn') !!}
+                                            {!! Form::text('name_q2', null, ['class' => 'form-control' ]) !!}
 
-                                        {!! Form::label('email_q2', 'E-post') !!}
-                                        {!! Form::email('email_q2', null, ['class' => 'form-control' ]) !!}
-                                        <br>
-                                        <br>
-                                        <button type="submit" name="updateQuizmasterProfile" class="btn btn-success btn-md">Lagre</button>
-                                        <button type="reset" class="btn btn-default btn-md">Nullstill</button>
+                                            {!! Form::label('phone_q2', 'Telefon') !!}
+                                            {!! Form::text('phone_q2', null, ['class' => 'form-control' ]) !!}
 
-                                        {!! Form::close() !!}
-                                    </dl>
+                                            {!! Form::label('email_q2', 'E-post') !!}
+                                            {!! Form::email('email_q2', null, ['class' => 'form-control' ]) !!}
+                                            <br>
+                                            <br>
+                                            {!! Form::submit('Lagre', ['name'=>'updateQuizmaster', 'class'=>'btn btn-success btn-md']) !!}
+                                            {!! Form::button('Nullstill', ['type'=>'reset', 'class'=>'btn btn-default btn-md']) !!}
+
+                                            {!! Form::close() !!}
+                                        </dl>
+                                    </div>
                                 </div>
                             </div>
 
@@ -93,7 +96,8 @@
                                                     Er du sikker på at du vil fjerne quizmasteren? Dette kan ikke gjøres om på!
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <form role="form" method="POST" action="{{ URL::to('volunteers/quiz/delete') }}/{{ $quizmaster->id }}" id="volunteerQuizDelete" accept-charset="UTF-8">
+
+                                                    <form role="form" method="POST" action="{{route('quiz.delete', ['id' => $quizmaster->id])}}" id="volunteerQuizDelete" accept-charset="UTF-8">
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
                                                         <button type="submit" class="btn btn-danger">Fjern quizmaster!</button>
@@ -118,6 +122,9 @@
                 <!-- /.row (nested) -->
             </div>
             <!-- /.panel-body -->
+            <div class="panel-footer">
+                Lagt til: {!! $quizmaster->created_at !!}
+            </div>
         </div>
         <!-- /.panel -->
     </div>
@@ -127,8 +134,5 @@
 @endsection
 
 @section('footer')
-        <!-- SMS -->
-{!! HTML::script('js/sms/single_sms.js') !!}
-        <!-- SMS character counting -->
-{!! HTML::script('js/sms/char_count.js') !!}
+
 @endsection

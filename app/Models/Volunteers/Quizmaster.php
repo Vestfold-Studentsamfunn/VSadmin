@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\Volunteers;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VolunteerQuiz extends Model
+class Quizmaster extends Model
 {
     protected $table = 'volunteerQuiz';
 
@@ -16,4 +16,6 @@ class VolunteerQuiz extends Model
         'phone_q2',
         'email_q2',
     ];
+
+    //protected $dateFormat = 'U';
 }

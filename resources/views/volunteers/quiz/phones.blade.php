@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Medlemmer')
+@section('title', 'Telefonliste - Quizmastere')
 
 @section('header')
 <!-- Timeline CSS -->
@@ -26,7 +26,7 @@
                             {{ Session::get('message') }}
                         </div>
                     @endif
-                    <h1 class="page-header">Telefonnummer</h1>
+                    <h1 class="page-header">Telefonliste - Quizmastere</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -35,12 +35,15 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            {{ $volunteers->count() }} telefonnummer funnet.
+
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            @foreach ($volunteers as $volunteer)
-                                {{ $volunteer->phone }} - {{ $volunteer->name }}<br/>
+                            @foreach ($quizmasters as $quizmaster)
+                                {{ $quizmaster->phone_q1 }} - {{ $quizmaster->name_q1 }}<br/>
+                                @if ($quizmaster->phone_q2 != '')
+                                    {{ $quizmaster->phone_q2 }} - {{ $quizmaster->name_q2 }}<br/>
+                                @endif
                             @endforeach
                         </div>
                         <!-- /.panel-body -->

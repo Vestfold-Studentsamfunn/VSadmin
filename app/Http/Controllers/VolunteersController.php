@@ -7,7 +7,6 @@ use App\Departments;
 use App\VipGroups;
 use App\VolunteerData;
 use App\VolunteerJobs;
-use App\VolunteerQuiz;
 
 use App\Http\Requests;
 use App\Http\Requests\StoreMemberProfileRequest;
@@ -45,16 +44,6 @@ class VolunteersController extends Controller
         $volunteerJobs  = VolunteerJobs::orderBy('name', 'asc')->get();
 
         return view('volunteers.index', compact('volunteers', 'volunteerJobs'));
-    }
-
-    public function quizIndex()
-    {
-
-        $quizmasters = VolunteerQuiz::select('id', 'name_q1', 'phone_q1', 'email_q1', 'name_q2')
-            ->distinct()
-            ->get();
-
-        return view('volunteers.quiz.index', compact('quizmasters'));
     }
 
     /**
@@ -142,15 +131,6 @@ class VolunteersController extends Controller
         return view('volunteers.edit', compact('volunteer', 'volunteerJobs'));
     }
 
-    public function quizEdit()
-    {
-        $id = Input::get('id');
-
-        $quizmaster = VolunteerQuiz::find($id);
-
-        return view('volunteers.quiz.edit', compact('quizmaster'));
-    }
-
     /**
      * Update the specified member.
      *
@@ -175,26 +155,6 @@ class VolunteersController extends Controller
         return \Redirect::back();
     }
 
-    public function quizUpdate(Request $request)
-    {
-        $id = Input::get('id');
-        $updateQuizmaster = VolunteerQuiz::find($id);
-
-            $updateQuizmaster->name_q1         = $request->name_q1;
-            $updateQuizmaster->phone_q1        = $request->phone_q1;
-            $updateQuizmaster->email_q1        = $request->email_q1;
-            $updateQuizmaster->name_q2         = $request->name_q2;
-            $updateQuizmaster->phone_q2        = $request->phone_q2;
-            $updateQuizmaster->email_q2        = $request->email_q2;
-
-
-            flash()->success('Informasjon oppdatert');
-
-        $updateQuizmaster->save();
-
-        return \Redirect::back();
-    }
-
     /**
      * Remove the specified volunteer.
      *
@@ -212,17 +172,6 @@ class VolunteersController extends Controller
         flash()->success('Den frivillige ble fjernet!');
 
         return \Redirect::action('VolunteersController@index');
-    }
-
-    public function quizDestroy($id)
-    {
-        $quizmaster = VolunteerQuiz::find($id);
-
-        $quizmaster->delete();
-
-        flash()->success('Quizmasteren ble fjernet!');
-
-        return \Redirect::action('VolunteersController@quizIndex');
     }
 
     /**
