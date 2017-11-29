@@ -28,9 +28,6 @@ class QuizmasterRequest extends Request
             'name_q1'   => 'required|string',
             'phone_q1'  => 'required|numeric',
             'email_q1'  => 'required|email',
-            'name_q2'   => 'string',
-            'phone_q2'  => 'numeric',
-            'email_q2'  => 'email',
         ];
     }
 }
