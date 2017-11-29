@@ -58,7 +58,7 @@ class QuizmasterController extends Controller
         //Activity::log(Auth::user()->getFullName(). ' la til '.$request->name.' som frivillig');
         flash()->success('Quizmaster opprettet');
 
-        return \Redirect::action('Volunteers\Quizmaster@index');
+        return \Redirect::action('Volunteers\QuizmasterController@index');
     }
 
     /**
@@ -113,7 +113,7 @@ class QuizmasterController extends Controller
 
         flash()->success('Quizmasteren ble fjernet!');
 
-        return \Redirect::action('Volunteers\Quizmaster@index');
+        return \Redirect::action('Volunteers\QuizmasterController@index');
     }
 
     /**
