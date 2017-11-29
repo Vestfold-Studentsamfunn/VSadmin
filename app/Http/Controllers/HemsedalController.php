@@ -27,7 +27,7 @@ use Intervention\Image\Facades\Image;
 
 use Yajra\DataTables\Datatables;
 
-use //Activity;
+//use Activity;
 use Auth;
 
 class HemsedalController extends Controller
@@ -391,11 +391,6 @@ class HemsedalController extends Controller
         $hemsedalNothing       = Hemsedal::whereNotIn('depPayed', ['1'])
             ->whereNotIn('allPayed', ['1'])
             ->count();
-
-        $sweaterSizes = Hemsedal::selectRaw('*, count(*)')
-            ->where('allPayed', '1')
-            ->groupBy('sweaterSize')
-            ->get();
 
         $sweaterSizesAll = Hemsedal::selectRaw('sweaterSize, COUNT(*) as count')
             ->where('depPayed', '1')
