@@ -20,6 +20,7 @@ mix.copyDirectory('node_modules/ionicons/dist/fonts', 'public/fonts');
 mix.copy('node_modules/admin-lte/dist/js/adminlte.min.js', 'public/js/adminlte.min.js');
 mix.copy('node_modules/admin-lte/dist/css/AdminLTE.min.css', 'public/css/AdminLTE.min.css');
 mix.copyDirectory('node_modules/admin-lte/dist/css/skins', 'public/css/skins');
+mix.copy('node_modules/admin-lte/dist/img/boxed-bg.jpg', 'public/img/boxed-bg.jpg');
 
 // Plugins
 mix.copyDirectory('node_modules/admin-lte/plugins', 'public/plugins');
@@ -32,9 +33,11 @@ mix.copy('node_modules/jquery-sparkline/jquery.sparkline.min.js', 'public/plugin
 mix.copyDirectory('node_modules/ion-rangeslider', 'public/plugins/ion-slider');
 mix.copyDirectory('node_modules/bootstrap-datepicker/dist', 'public/plugins/datepicker');
 mix.copy('node_modules/bootstrap-daterangepicker/daterangepicker.js', 'public/plugins/daterangepicker/daterangepicker.js');
+mix.copy('node_modules/bootstrap-daterangepicker/daterangepicker.css', 'public/plugins/daterangepicker/daterangepicker.css');
 mix.copyDirectory('node_modules/bootstrap-colorpicker/dist', 'public/plugins/colorpicker');
-mix.copyDirectory('node_modules/datatables.net', 'public/plugins/datatables.net');
-mix.copyDirectory('node_modules/datatables.net-bs', 'public/plugins/datatables.net-bs');
+mix.copy('node_modules/datatables.net/js/jquery.dataTables.js', 'public/plugins/datatables/js/jquery.dataTables.js');
+mix.copy('node_modules/datatables.net-bs/css/dataTables.bootstrap.css', 'public/plugins/datatables/css/dataTables.bootstrap.css');
+mix.copy('node_modules/datatables.net-bs/js/dataTables.bootstrap.js', 'public/plugins/datatables/js/dataTables.bootstrap.js');
 mix.copy('node_modules/jquery-knob/dist/jquery.knob.min.js', 'public/plugins/jquery-knob/jquery.knob.min.js');
 mix.copy('node_modules/slimscroll/lib/slimscroll.js', 'public/plugins/slimscroll/slimscroll.js');
-
+mix.copy('node_modules/moment/min/moment-with-locales.min.js', 'public/plugins/moment/moment.min.js');

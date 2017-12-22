@@ -1,0 +1,23 @@
+{
+    "/css/bootstrap.min.css": "/css/bootstrap.min.css",
+    "/js/bootstrap.min.js": "/js/bootstrap.min.js",
+    "/js/jquery.min.js": "/js/jquery.min.js",
+    "/css/font-awesome.min.css": "/css/font-awesome.min.css",
+    "/css/ionicons.min.css": "/css/ionicons.min.css",
+    "/js/adminlte.min.js": "/js/adminlte.min.js",
+    "/css/AdminLTE.min.css": "/css/AdminLTE.min.css",
+    "/img/boxed-bg.jpg": "/img/boxed-bg.jpg",
+    "/plugins/Chart.js/Chart.min.js": "/plugins/Chart.js/Chart.min.js",
+    "/plugins/flot/jquery.flot.js": "/plugins/flot/jquery.flot.js",
+    "/plugins/morris.js/morris.min.js": "/plugins/morris.js/morris.min.js",
+    "/plugins/morris.js/morris.css": "/plugins/morris.js/morris.css",
+    "/plugins/jquery-sparkline/jquery.sparkline.min.js": "/plugins/jquery-sparkline/jquery.sparkline.min.js",
+    "/plugins/daterangepicker/daterangepicker.js": "/plugins/daterangepicker/daterangepicker.js",
+    "/plugins/daterangepicker/daterangepicker.css": "/plugins/daterangepicker/daterangepicker.css",
+    "/plugins/datatables/js/jquery.dataTables.js": "/plugins/datatables/js/jquery.dataTables.js",
+    "/plugins/datatables/css/dataTables.bootstrap.css": "/plugins/datatables/css/dataTables.bootstrap.css",
+    "/plugins/datatables/js/dataTables.bootstrap.js": "/plugins/datatables/js/dataTables.bootstrap.js",
+    "/plugins/jquery-knob/jquery.knob.min.js": "/plugins/jquery-knob/jquery.knob.min.js",
+    "/plugins/slimscroll/slimscroll.js": "/plugins/slimscroll/slimscroll.js",
+    "/plugins/moment/moment.min.js": "/plugins/moment/moment.min.js"
+}
