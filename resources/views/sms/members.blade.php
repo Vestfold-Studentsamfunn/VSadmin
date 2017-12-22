@@ -1,36 +1,17 @@
 @extends('layouts.master')
 
-@section('title', 'Medlemmer')
+@section('title', 'Send SMS til medlemmer')
+
+@section('description', '')
 
 @section('header')
-        <!-- Timeline CSS -->
-{!! HTML::style('bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') !!}
-
-        <!-- Morris Charts CSS -->
-{!! HTML::style('bower_components/datatables-responsive/css/dataTables.responsive.css') !!}
-@stop
-
-@section('sidebar')
-    @parent
+    <link rel="stylesheet" href="{{ asset("/plugins/datatables/css/dataTables.bootstrap.css") }}">
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Send SMS til medlemmer</h1>
-            @include('errors.errors')
-            @include('flash::message')
-        </div>
-        <!-- /.col-lg-12 -->
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Placeholder Title
-                </div>
-                <!-- /.panel-heading -->
+            <div class="box box-primary">
                 <div class="panel-body">
                     <div class="col-lg-8">
 

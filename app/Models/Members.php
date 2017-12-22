@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Members extends Model
@@ -40,5 +41,12 @@ class Members extends Model
      */
     public function volunteerJobs() {
         return $this->belongsToMany('App\VolunteerJobs', 'volunteer_members', 'member_id', 'job_id')->withTimestamps();
+    }
+
+    /**
+     * Is the member banned.
+     */
+    public function isMemberBanned() {
+        return ($this->banned == 1 AND $this->banned_to >= Carbon::now());
     }
 }

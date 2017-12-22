@@ -1,26 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Medlemmer')
+@section('title', 'U20 Liste')
+
+@section('description', 'Medlemmer under 20 år med signert U20 kontrakt')
 
 @section('header')
-
-@endsection
-
-@section('sidebar')
-    @parent
 @endsection
 
 @section('content')
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="text-center">
-                <h2 class="page-header">{{ $list->get('page-header') }}</h2>
-                {{ $data->count() }} medlemmer med signert kontrakt
-            </div>
-        </div>
-        <!-- /.col-lg-12 -->
-    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -36,12 +23,12 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($data as $member)
-                                            <tr @if($member->banned == 1) bgcolor="#d3d3d3" @endif>
+                                            <tr @if($member->isMemberBanned()) bgcolor="#d3d3d3" @endif>
                                                 <td>{{ $member->id }}</td>
                                                 <td>{{ $member->name }}</td>
                                                 <td><div class="text-center">{{ $member->birthDate->format('d.m.Y') }}</div></td>
                                                     <td>
-                                                        @if($member->banned == 1)
+                                                        @if($member->isMemberBanned())
                                                             <div class="text-center"><strong>{{ $member->banned_to->format('d.m.Y') }}</strong></div>
                                                         @endif
                                                     </td>

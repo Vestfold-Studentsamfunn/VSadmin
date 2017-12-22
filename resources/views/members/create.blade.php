@@ -1,80 +1,73 @@
 @extends('layouts.master')
 
-@section('title', 'Medlemmer')
+@section('title', 'Registrer medlem')
+
+@section('description', '')
 
 @section('header')
 
-@stop
-
-@section('sidebar')
-    @parent
 @endsection
 
 @section('content')
-
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Registrer medlem</h1>
-    </div>
-    <!-- /.col-lg-12 -->
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <!-- form start -->
+            {!! Form::model($member, ['route' => ['members.store'], 'files' => true, 'class' => 'form-horizontal']) !!}
+                <div class="box-body">
                     <div class="col-lg-8">
                         @include('errors.errors')
                         @include('flash::message')
-                        <form role="form" method="POST" action="{{ URL::to('members/store') }}" name="memberAdd" accept-charset="UTF-8" enctype="multipart/form-data">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <div class="col-lg-12">
-                                <br/>
+                        <div class="box-body">
                             <div class="form-group">
-                                <label>Navn</label>
-                                <input class="form-control" name="name" value="{{ old('name') }}" autofocus>
+                                {!! Form::label('name', 'Navn') !!}
+                                {!! Form::text('name', null, ['class' => 'form-control' ]) !!}
 
-                                <label>Adresse</label>
-                                <input class="form-control" name="address" value="{{ old('address') }}">
+                                {!! Form::label('address', 'Adresse') !!}
+                                {!! Form::text('address', null, ['class' => 'form-control' ]) !!}
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        {!! Form::label('postalCode', 'Postnummer') !!}
+                                        {!! Form::text('postalCode', null, ['class' => 'form-control', 'onkeyup' => 'getPostalArea(this)']) !!}
+                                    </div>
+                                    <div class="col-xs-10">
+                                        {!! Form::label('postalArea', 'Poststed') !!}
+                                        {!! Form::text('postalArea', null, ['class' => 'form-control' ]) !!}
+                                    </div>
+                                </div>
+                                {!! Form::label('phone', 'Telefon') !!}
+                                {!! Form::text('phone', null, ['class' => 'form-control' ]) !!}
 
-                                <label>Postnummer</label>
-                                <input class="form-control" name="postalCode" value="{{ old('postalCode') }}" >
+                                {!! Form::label('email', 'E-post') !!}
+                                {!! Form::email('email', null, ['class' => 'form-control' ]) !!}
 
-                                <label>Poststed</label>
-                                <input class="form-control" name="postalArea" value="{{ old('postalArea') }}" >
+                                {!! Form::label('birthDate', 'Født') !!}
+                                <input class="form-control" name="birthDate" placeholder="dd.mm.yyyy" id="birthDate" data-inputmask="'alias': 'dd.mm.yyyy'" data-mask>
 
-                                <label>Telefon</label>
-                                <input class="form-control" name="phone" value="{{ old('phone') }}" >
-
-                                <label>E-post</label>
-                                <input class="form-control" name="email" type="email" value="{{ old('email') }}" >
-
-                                <label>Født</label>
-                                <input class="form-control" name="birthDate" placeholder="dd.mm.yyyy" value="{{ old('birthDate') }}"> <!- dd.mm.yyyy -!>
-
-                                <label>Fakultet</label>
+                                {!! Form::label('department', 'Fakultet') !!}
                                 {!! Form::select('department', $selectDepartment, null, ['class' => 'form-control']) !!}
 
-                                <label>Semestere</label>
-                                <select name="semesters" class="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                </select>
-                                {!! Form::label('picture','Bilde',array('id'=>'','class'=>'')) !!}
+                                {!! Form::label('semesters', 'Semestere') !!}
+                                {!! Form::select('semesters', array('1' => '1', '2' => '2'), 2, ['class' => 'form-control']) !!}
+
+                                {!! Form::label('picture','Nytt bilde') !!}
                                 {!! Form::file('picture') !!}
                             </div>
-                            <button type="submit" class="btn btn-primary">Lagre</button>
-                            <button type="reset" class="btn btn-default">Reset</button>
-                            </div>
-                        </form>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            {!! Form::submit('Lagre', ['name'=>'storeMember', 'class'=>'btn btn-success btn-md']) !!}
+                            {!! Form::button('Nullstill', ['type'=>'reset', 'class'=>'btn btn-default btn-md']) !!}
+                        </div>
+                        <!-- /.box-footer -->
                     </div>
-                    <!-- /.col-lg-6 (nested) -->
+                    <!-- /.col-lg-8 (nested) -->
                 </div>
-                <!-- /.row (nested) -->
-            </div>
-            <!-- /.panel-body -->
+                <!-- /.box-body -->
+            {!! Form::close() !!}
         </div>
-        <!-- /.panel -->
+        <!-- /.box -->
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -82,5 +75,27 @@
 @endsection
 
 @section('footer')
+<!-- InputMask -->
+<script src="{{ asset("/plugins/input-mask/jquery.inputmask.js") }}"></script>
+<script src="{{ asset("/plugins/input-mask/jquery.inputmask.date.extensions.js") }}"></script>
+<script src="{{ asset("/plugins/input-mask/jquery.inputmask.extensions.js") }}"></script>
+<script type="text/javascript">
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd.mm.yyyy', { 'placeholder': 'dd.mm.yyyy' });
+    //Money Euro
+    $('[data-mask]').inputmask();
+
+    function getPostalArea(e) {
+        var zipCode = e.value;
+        $.ajax({
+            url: 'https://api.bring.com/shippingguide/api/postalCode.json?clientUrl=https://hovedstyret.studentsamfunnet.no&pnr=' + zipCode,
+            dataType: 'JSON',
+
+            success: function (data) {
+                $('#postalArea').val(data.result);
+            }
+        });
+    }
+</script>
 
 @endsection

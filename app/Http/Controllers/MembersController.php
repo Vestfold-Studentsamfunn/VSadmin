@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Members;
+use App\Models\Members;
 use App\Departments;
 use App\VipGroups;
 use App\VolunteerData;
@@ -46,7 +46,7 @@ class MembersController extends Controller
      */
     public function getIndex()
     {
-        $members = Members::select('id', 'name', 'phone', 'email', 'department', 'payed', 'vipGroup');
+        $members = Members::select('id', 'name', 'phone', 'email', 'department', 'payed');
 
         return Datatables::of($members)
             ->addColumn('action', function ($member) {
@@ -64,7 +64,7 @@ class MembersController extends Controller
                     $btnColor = 'info';
                 }
 
-                return '<a href="/members/edit?id='.$member->id.'" class="btn btn-block btn-'.$btnColor.'"><i class="glyphicon glyphicon-edit"></i> Vis info</a>';
+                return '<a href="'.route('members.edit', ['id' => $member->id], false).'" class="btn btn-block btn-'.$btnColor.' btn-flat"><i class="glyphicon glyphicon-edit"></i> Vis info</a>';
             })
             ->make(true);
     }
@@ -76,10 +76,11 @@ class MembersController extends Controller
      */
     public function create()
     {
+        $member             = new Members();
         $selectDepartment   = Departments::pluck('full_name', 'short_name');
         $selectVipGroup     = VipGroups::pluck('name', 'name');
 
-        return view('members.create', compact('selectDepartment', 'selectVipGroup'));
+        return view('members.create', compact('member', 'selectDepartment', 'selectVipGroup'));
     }
 
     /**
@@ -135,10 +136,8 @@ class MembersController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit()
+    public function edit($id)
     {
-        $id = Input::get('id');
-
         $member = Members::find($id);
 
         $selectDepartment   = Departments::pluck('full_name', 'short_name');
@@ -146,16 +145,14 @@ class MembersController extends Controller
 
         $memberAge = Carbon::now()->diffInYears($member->birthDate);
 
-        if ($member->banned == 1) {
+        if ($member->isMemberBanned()) {
             $banned_from = $member->banned_from->format('d.m.Y');
             $banned_to = $member->banned_to->format('d.m.Y');
-            $panel_type = "panel-red";
-            $banned = 1;
+            $banned = true;
         } else {
             $banned_from = null;
             $banned_to = null;
-            $panel_type = "panel-default";
-            $banned = 0;
+            $banned = false;
         }
 
         return view('members.edit', compact('member', 'selectDepartment', 'selectVipGroup', 'memberAge',
@@ -245,28 +242,28 @@ class MembersController extends Controller
     {
         $member = Members::find($id);
 
-        if ($request->registerPayment == 1)
+        //if ($request->registerPayment == 1)
+        //{
+        if ($member->payed == 0)
         {
-            if ($member->payed == 0)
-            {
-                $member->payed = 1;
-            }
-            elseif ($member->payed == 2)
-            {
-                $member->payed = -1;
-            }
+            $member->payed = 1;
+        }
+        elseif ($member->payed == 2)
+        {
+            $member->payed = -1;
+        }
 
-            $member->payedDate = Carbon::now();
-            //Activity::log(Auth::user()->getFullName(). ' registrerte betaling av medlem '.$id);
-            flash()->success('Betaling registrert!');
-        }
-        elseif ($request->printNewCard == 1)
-        {
-            $member->payed      = 1;
-            $member->cardNumber = 0;
+        $member->payedDate = Carbon::now();
+        //Activity::log(Auth::user()->getFullName(). ' registrerte betaling av medlem '.$id);
+        flash()->success('Betaling registrert!');
+        //}
+        //elseif ($request->printNewCard == 1)
+        //{
+        //    $member->payed      = 1;
+        //    $member->cardNumber = 0;
             //Activity::log(Auth::user()->getFullName(). ' skrev ut nytt kort for medlem  '.$id);
-            flash()->info('Nytt kort vil bli skrevet ut');
-        }
+        //    flash()->info('Nytt kort vil bli skrevet ut');
+        //}
 
         $member->save();
 
@@ -292,8 +289,8 @@ class MembersController extends Controller
         $memberSettings->banned     = $request->banned;
 
         if ($request->banned == 1) {
-            $memberSettings->banned_from    = Carbon::createFromFormat('d.m.Y', $request->banned_from)->toDateString(); // Result = yyyy-mm-dd
-            $memberSettings->banned_to    = Carbon::createFromFormat('d.m.Y', $request->banned_to)->toDateString(); // Result = yyyy-mm-dd
+            $memberSettings->banned_from    = Carbon::parse($request->banned_from)->toDateString(); // Result = yyyy-mm-dd
+            $memberSettings->banned_to    = Carbon::parse($request->banned_to)->toDateString(); // Result = yyyy-mm-dd
         }
 
         $memberSettings->save();
@@ -453,16 +450,17 @@ class MembersController extends Controller
 
 
     /**
-     * Show the form for editing the specified member.
+     * Show emails for all members.
      *
      * @return Response
      */
     public function listEmails()
     {
-        $members             = Members::select('email', 'noEmail')
-                                        ->whereIn('payed', ['-1', '1'])
-                                        ->whereNotIn('noEmail', ['1'])
-                                        ->get();
+        $members = Members::select('email', 'noEmail')
+            ->whereIn('payed', ['-1', '1'])
+            ->whereNotIn('noEmail', ['1'])
+            ->distinct()
+            ->get();
 
         $selectDepartment   = Departments::pluck('full_name', 'short_name');
         $selectVipGroup     = VipGroups::pluck('name', 'name');
@@ -471,17 +469,18 @@ class MembersController extends Controller
     }
 
     /**
-     * Show the form for editing the specified member.
+     * Show phones for all members.
      *
      * @param  int  $id
      * @return Response
      */
     public function listPhones()
     {
-        $members             = Members::select('phone', 'noPhone')
-                                        ->whereIn('payed', ['-1', '1'])
-                                        ->whereNotIn('noPhone', ['1'])
-                                        ->get();
+        $members = Members::select('phone', 'noPhone')
+            ->whereIn('payed', ['-1', '1'])
+            ->whereNotIn('noPhone', ['1'])
+            ->distinct()
+            ->get();
 
         $selectDepartment   = Departments::pluck('full_name', 'short_name');
         $selectVipGroup     = VipGroups::pluck('name', 'name');
@@ -499,66 +498,43 @@ class MembersController extends Controller
         $numberOfMembers        = Members::whereIn('payed', ['-1', '1'])
             ->count();
 
-        $numberOfVolunteers     = VolunteerData::all()->count('name');
-
-        $numberOfHemsedal       = Hemsedal::whereIn('depPayed', ['1'])
-            ->count();
-
-        $numberOfCards          = Members::whereIn('payed', ['1'])
-            ->count();
-
         $numberOfDepartments    = Members::select(DB::raw('count(department) as amount, department'))
             ->whereIn('payed', ['-1', '1'])
             ->groupBy('department')
             ->orderBy('department', 'asc')
             ->get();
 
-        $unpaidMembers          = Members::limit(10)->whereNotIn('payed', ['-1', '1'])
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $cardsWithoutNumber     = Members::limit(5)->where('payed', '-1')
-            ->where('cardNumber', '0')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
         $ageGroups              = $this->getAgeGroups();
-
-        $registrations = Members::whereIn('payed', ['-1', '1'])
-            ->whereNotIn('vipGroup', ['Ingen'])
-            ->orWhereIn('vipGroup', ['Æresmedlem'])
-            ->select('vipGroup', DB::raw('count(*) as total'))
-            ->groupBy('vipGroup')
-            ->pluck('total','vipGroup')->all();
-
-        $payments = Members::whereIn('payed', ['-1', '1'])
-            ->whereNotIn('vipGroup', ['Ingen'])
-            ->orWhereIn('vipGroup', ['Æresmedlem'])
-            ->select('vipGroup', DB::raw('count(*) as total'))
-            ->groupBy('vipGroup')
-            ->pluck('total','vipGroup')->all();
 
         $vipCount = Members::whereIn('payed', ['-1', '1'])
             ->whereNotIn('vipGroup', ['Ingen'])
             ->orWhereIn('vipGroup', ['Æresmedlem'])
             ->select('vipGroup', DB::raw('count(*) as total'))
             ->groupBy('vipGroup')
-            ->pluck('total','vipGroup')->all();
-
-        $banned = Members::whereIn('payed', ['-1', '1'])
-            ->whereIn('banned', ['1'])
-            ->orderBy('banned_to', 'desc')
-            ->pluck('banned_to','name')
+            ->pluck('total','vipGroup')
             ->all();
 
-        $halfYear =     Members::whereIn('payed', ['-1', '1'])
+        $banned = Members::select('name', 'banned_to')
+            ->whereIn('payed', ['-1', '1'])
+            ->where('banned_to', '>=', Carbon::now())
+            ->where('banned', '1')
+            ->orderBy('banned_to', 'desc')
+            ->get();
+
+        $halfYear = Members::whereIn('payed', ['-1', '1'])
             ->whereIn('semesters', ['1'])
             ->count();
 
-        return view('members.details', compact('numberOfMembers', 'numberOfVolunteers', 'numberOfHemsedal', 'numberOfCards',
-            'numberOfDepartments', 'ageGroups', 'unpaidMembers', 'cardsWithoutNumber', 'halfYear', 'vipCount', 'banned'));
+        $u20 = Members::whereIn('payed', ['-1', '1'])
+            ->where('birthDate', '>', Carbon::now()->subYears(20))
+            ->count();
 
-        //return view('members.details', compact('numberOfMembers', 'numberOfVip', 'numberOfCards', 'numberOfDepartments', 'ageGroups'));
+        $u20Contract = Members::whereIn('payed', ['-1', '1'])
+            ->where('birthDate', '>', Carbon::now()->subYears(20))
+            ->where('u20', true)
+            ->count();
+
+        return view('members.details', compact('numberOfMembers', 'numberOfDepartments', 'ageGroups', 'halfYear', 'vipCount', 'banned', 'u20', 'u20Contract'));
     }
 
 
