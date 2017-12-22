@@ -1,107 +1,88 @@
 <!DOCTYPE html>
-<html lang="no">
-
+<html>
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <title>VSadmin | @yield('title')</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- PACE -->
+    <script src="{{ asset("/plugins/pace/pace.min.js") }}"></script>
+    <!-- Pace style -->
+    <link rel="stylesheet" href="{{ asset("/plugins/pace/pace.min.css") }}">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{{ asset("/css/bootstrap.min.css") }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset("/css/font-awesome.min.css") }}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{{ asset("/css/ionicons.min.css") }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset("/css/AdminLTE.min.css") }}">
+    <!-- AdminLTE Skin. -->
+    <link rel="stylesheet" href="{{ asset("/css/skins/skin-blue.min.css") }}">
+    <!-- Page-Level CSS -->
+@yield('header')
 
-    <title>@yield('title') - Hovedstyret</title>
-
-    <!-- Bootstrap Core CSS -->
-    {!! HTML::style('bower_components/bootstrap/dist/css/bootstrap.min.css') !!}
-
-    <!-- MetisMenu CSS -->
-    {!! HTML::style('bower_components/metisMenu/dist/metisMenu.min.css') !!}
-
-    <!-- Custom Fonts -->
-    {!! HTML::style('bower_components/font-awesome/css/font-awesome.min.css') !!}
-
-    <!-- Custom CSS -->
-    {!! HTML::style('dist/css/sb-admin-2.css') !!}
-
-    @yield('header')
-	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
+<body class="hold-transition skin-blue sidebar-mini layout-boxed">
+<div class="wrapper">
 
-<body>
+    <!-- Main Header -->
+    @include('layouts.header')
 
-    <div id="wrapper">
+    <!-- Left side column. -->
+    @include('layouts.sidebarMenu')
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/dashboard">VS Admin -- BETA</a>
-            </div>
-            <!-- /.navbar-header -->
+    <!-- Content Wrapper. -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                @yield('title')
+                <small>@yield('description')</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+                <li class="active">Here</li>
+            </ol>
+        </section>
 
-            <ul class="nav navbar-top-links navbar-right">
-				<li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> {{ Auth::user()->first_name . ' ' . Auth::user()->last_name }} <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/settings/users/{{ Auth::user()->id }}/edit"><i class="fa fa-user fa-fw"></i> Brukerprofil</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Innstillinger</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logg ut</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
-			
-			@section('sidebar')
-                @include('layouts.sidebar')
-            </div>
-            <!-- /.navbar-static-side -->
-        </nav>
-
-        <div id="page-wrapper">
-		@yield('content')
-        </div>
-        <!-- /#page-wrapper -->
-
+        <!-- Main content -->
+        <section class="content container-fluid">
+            @yield('content')
+        </section>
+        <!-- /.content -->
     </div>
-    <!-- /#wrapper -->
+    <!-- /.content-wrapper -->
 
-    <!-- jQuery -->
-    {!! HTML::script('bower_components/jquery/dist/jquery.min.js') !!}
+    <!-- Main Footer -->
+    @include('layouts.footer')
 
-    <!-- Bootstrap Core JavaScript -->
-    {!! HTML::script('bower_components/bootstrap/dist/js/bootstrap.min.js') !!}
+    <!-- Control Sidebar -->
+    @include('layouts.sidebarControl')
 
-    <!-- Metis Menu Plugin JavaScript -->
-    {!! HTML::script('bower_components/metisMenu/dist/metisMenu.min.js') !!}
-	
-	<!-- Custom Theme JavaScript -->
-    {!! HTML::script('dist/js/sb-admin-2.js') !!}
+</div>
+<!-- ./wrapper -->
 
-    @yield('footer')
-    <!-- SMS -->
-    {!! HTML::script('js/sms/single_sms.js') !!}
-    <!-- SMS character counting -->
-    {!! HTML::script('js/sms/char_count.js') !!}
+<!-- REQUIRED JS SCRIPTS -->
+
+<!-- jQuery 3 -->
+<script src="{{ asset("/js/jquery.min.js") }}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{ asset("/js/bootstrap.min.js") }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ asset("/js/adminlte.min.js") }}"></script>
+<!-- Page-Level Scripts -->
+@yield('footer')
+
 </body>
-
 </html>
