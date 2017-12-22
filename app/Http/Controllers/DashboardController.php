@@ -6,7 +6,7 @@ use App\VolunteerJobs;
 use Illuminate\Http\Request;
 
 use DB;
-use App\Members;
+use App\Models\Members;
 use App\VolunteerData;
 use App\Hemsedal;
 use App\Http\Requests;

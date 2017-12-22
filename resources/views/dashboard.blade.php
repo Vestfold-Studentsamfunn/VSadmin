@@ -2,94 +2,137 @@
 
 @section('title', 'Dashboard')
 
+@section('description', '')
+
 @section('header')
-<!-- Timeline CSS -->
-{!! HTML::style('dist/css/timeline.css') !!}
-
-<!-- Morris Charts CSS -->
-{!! HTML::style('bower_components/morrisjs/morris.css') !!}
-@endsection
-
-@section('sidebar')
-    @parent
 @endsection
 
 @section('content')
 
 @include('errors.errors')
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
-                </div>
-                <!-- /.col-lg-12 -->
+<!-- Small boxes -->
+<div class="row">
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3>{{ $numberOfMembers }}</h3>
+
+                <p>Medlemmer</p>
             </div>
-            <!-- /.row -->
+            <div class="icon">
+                <i class="fa fa-users"></i>
+            </div>
+            <a href="{{ Route('members.details') }}" class="small-box-footer">Mer info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-blue">
+            <div class="inner">
+                <h3>{{ $numberOfVolunteers }}</h3>
 
-            @include('layouts.infoboxes')
+                <p>Frivillige</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-heart"></i>
+            </div>
+            <a href="#" class="small-box-footer">Mer info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-yellow">
+            <div class="inner">
+                <h3>{{ $numberOfHemsedal }}</h3>
 
-            <div class="row">
-                @if (Session::has('message'))
-                    <div class="alert alert-success {{Session::has('message_important') ? 'alert-important' : ''}}">
-                        @if (Session::has('message_important'))
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <p>Skitur</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-snowflake-o"></i>
+            </div>
+            <a href="{{ Route('hemsedal.details') }}" class="small-box-footer">Mer info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-red">
+            <div class="inner">
+                <h3>{{ $numberOfCards }}</h3>
+
+                <p>Kort</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-id-card"></i>
+            </div>
+            <a href="#" class="small-box-footer">Mer info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+</div>
+<!-- /.row -->
+<!-- /Small boxes -->
+
+<div class="row">
+    @if (Session::has('message'))
+        <div class="alert alert-success {{Session::has('message_important') ? 'alert-important' : ''}}">
+            @if (Session::has('message_important'))
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            @endif
+            {{ Session::get('message') }}
+        </div>
+    @endif
+    <div class="col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Nyeste ubetalte medlemmer</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="unpaidMembers" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="text-right">#</th>
+                        <th>Navn</th>
+                        <th>Fakultet</th>
+                        <th class="text-right">Innmeldt</th>
+                        <th class="text-center">Registrer betaling</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($unpaidMembers as $unpaidMember)
+                        {{-- only show members who was created less than three months ago --}}
+                        @if (($unpaidMember->created_at->diffInMonths() < 3))
+                            <tr>
+                                <td class="text-right">{{ $unpaidMember['id'] }}</td>
+                                <td>{{ $unpaidMember['name'] }}</td>
+                                <td>{{ $unpaidMember['department'] }}</td>
+                                <td class="text-right">{{ $unpaidMember->created_at->format('d.m.Y') }}</td>
+                                <td class="text-center">
+                                    {!! Form::open(['route' => ['members.updatePayment', 'id' => $unpaidMember->id], 'files' => false]) !!}
+                                        {!! Form::submit($unpaidMember->semesters .' semester(e)', ['name'=>'registerPayment', 'class'=>'btn btn-success btn-sm btn-flat']) !!}
+                                    {!! Form::close() !!}
+                                </td>
+                            </tr>
                         @endif
-                        {{ Session::get('message') }}
-                    </div>
-                @endif
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Nyeste ubetalte medlemmer
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">#</th>
-                                    <th>Navn</th>
-                                    <th>Fakultet</th>
-                                    <th class="text-center">Innmeldt</th>
-                                    <th class="text-center">Registrer betaling</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($unpaidMembers as $unpaidMember)
-                                    {{-- show only members who was created less than three months ago --}}
-                                    @if (($unpaidMember->created_at->diffInMonths() < 3))
-                                        <tr>
-                                            <td class="text-center">{{ $unpaidMember['id'] }}</td>
-                                            <td>{{ $unpaidMember['name'] }}</td>
-                                            <td>{{ $unpaidMember['department'] }}</td>
-                                            <td class="text-center">{{ $unpaidMember->created_at->format('d.m.Y') }}</td>
-                                            <td class="text-center">
-                                                <form role="form" method="POST" action="{{ URL::to('members/update/payment') }}/{{ $unpaidMember->id }}" name="memberPaymentAndCard" accept-charset="UTF-8">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    @if ($unpaidMember->payed == 0 OR $unpaidMember->payed == 2)
-                                                        <input name='registerPayment' type='hidden' value='1'>
-                                                        <button type="submit" name="register" class="btn btn-success btn-sm">{{$unpaidMember->semesters}} semester(e)</button>
-                                                    @endif
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    {{-- show only members who was created less than one month ago --}}
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
-                    </div>
-                    <!-- /.panel-body -->
-                </div>
-                <!-- /.panel -->
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
-            <!-- /.row -->
+            <!-- ./box-body -->
+        </div>
+        <!-- ./box -->
+    </div>
+    <!-- ./col -->
+</div>
+<!-- /.row -->
 @endsection
 
 @section('footer')
-
 @endsection
 
 

@@ -6,7 +6,7 @@ use App\Hemsedal;
 use DateTime;
 use Illuminate\Http\Request;
 
-use App\Members;
+use App\Models\Members;
 use App\Departments;
 use App\VipGroups;
 
@@ -18,132 +18,165 @@ use Carbon\Carbon;
 
 class PrintController extends Controller
 {
-    public function settings()
+    protected function members()
     {
-        $referrer = URL::current();
-
-        if (strpos($referrer,'hemsedal')) {
-            return view('print.hemsedal');
-        }
-        elseif (strpos($referrer,'members')) {
-            return view('print.members');
-        }
-        elseif (strpos($referrer,'volunteers')) {
-            return view('print.volunteers');
-        }
+        return view('print.members');
     }
 
-    public function printList(Request $request)
+    protected function volunteers()
     {
-        $list = $this->createList($request->list);
-        $data = $this->getData($request->list);
+        return view('print.volunteers');
+    }
 
-        return view('print.output.'.$list->get('list_name'), compact('list', 'data'));
+    protected function hemsedal()
+    {
+        return view('print.hemsedal');
+    }
+
+    protected function printList(Request $request)
+    {
+        $list = $this->createList($request);
+        $data = $this->getData($request);
+
+        return view('print.output.' . $list->get('listName'), compact('list', 'data'));
     }
 
     private function createList($selection)
     {
         $list = collect(['year' => date('Y')]);
 
-        $referrer = URL::current();
+        switch ($selection->typeOfList) {
+            case 'members':
+                switch ($selection->nameOfList) {
+                    case 'GeneralAssembly':
+                        $list->put('listName', 'generalAssembly');
+                        $list->put('title', 'Stemmeberettigede generalforsamling');
+                        $list->put('limit', Carbon::now()->subDays(30)->format('d.m.Y'));
+                        break;
 
-        if (strpos($referrer,'hemsedal')) {
-            $list->put('list_name', 'hemsedal');
+                    case 'U20':
+                        $list->put('listName', 'u20');
+                        $list->put('title', 'U20 liste');
+                        $list->put('limit', Carbon::now()->subYears(20)->format('d.m.Y'));
+                        break;
 
-            if ($selection == 'allPayed') {
-                $list->put('page-header', 'Alt betalt');
-            }
-            elseif ($selection == 'onlyDepositum') {
-                $list->put('page-header', 'Kun depositum');
-            }
-            elseif ($selection == 'nothing') {
-                $list->put('page-header', 'Ingenting betalt');
-            }
-            elseif ($selection == 'everyone') {
-                $list->put('page-header', 'Alle registrerte');
-            }
+                    default:
+                        //
+                        break;
+                }
+                break;
 
-            return $list;
+            case 'volunteers':
+                $list->put('listName', 'volunteers');
+                //
+                break;
+
+            case 'hemsedal':
+                $list->put('listName', 'hemsedal');
+
+                switch ($selection->nameOfList) {
+                    case 'allPayed':
+                        $list->put('title', 'Alt betalt');
+                        break;
+
+                    case 'onlyDepositum':
+                        $list->put('title', 'Kun depositum');
+                        break;
+
+                    case 'nothing':
+                        $list->put('title', 'Ingenting betalt');
+                        break;
+
+                    case 'everyone':
+                        $list->put('title', 'Alle registrerte');
+                        break;
+
+                    default:
+                        //
+                        break;
+                }
+                break;
+
+            default:
+                //
+                break;
         }
-        elseif (strpos($referrer,'members')) {
-            if ($selection == 'GeneralAssembly') {
-                $list->put('list_name', 'generalAssembly');
-                $list->put('page-header', 'Stemmeberettigede generalforsamling');
-                $list->put('limit', Carbon::now()->subDays(30));
-            }
-            elseif ($selection == 'U20') {
-                $list->put('list_name', 'u20');
-                $list->put('page-header', 'U20 liste');
-                //$list->put('limit', Carbon::now()->subDays(30));
-            }
 
-            return $list;
-        }
-        elseif (strpos($referrer,'volunteers')) {
-            $list->put('list_name', 'volunteers');
-            return $list;
-        }
+        return $list;
     }
 
     private function getData($selection)
     {
         $now = Carbon::now();
+        $data = NULL;
 
-        $referrer = URL::current();
+        switch ($selection->typeOfList) {
+            case 'members':
+                switch ($selection->nameOfList) {
+                    case 'GeneralAssembly':
+                        $notAfter = Carbon::now()->subDays(30);
 
-        if (strpos($referrer,'hemsedal')) {
-            if ($selection == 'allPayed') {
-                $matchThese = ['depPayed' => '1', 'allPayed' => '1'];
-                $data = Hemsedal::select('name', 'phone', 'sweaterSize', 'busHome', 'room')
-                    ->OrWhere($matchThese)
-                    ->get();
-            }
-            elseif ($selection == 'onlyDepositum') {
-                $matchThese = ['depPayed' => '1', 'allPayed' => '0'];
-                $data = Hemsedal::select('name', 'phone', 'sweaterSize', 'busHome', 'room')
-                    ->OrWhere($matchThese)
-                    ->get();
-            }
-            elseif ($selection == 'nothing') {
-                $matchThese = ['depPayed' => '0', 'allPayed' => '0'];
-                $data = Hemsedal::select('name', 'phone', 'sweaterSize', 'busHome', 'room')
-                    ->OrWhere($matchThese)
-                    ->get();
-            }
-            elseif ($selection == 'everyone') {
-                $data = Hemsedal::select('name', 'phone', 'sweaterSize', 'busHome', 'room')
-                    ->get();
-            }
-            return $data;
+                        $data = Members::select('id', 'name', 'created_at', 'payedDate')
+                            ->whereIn('payed', ['-1', '1'])
+                            ->whereNotBetween('payedDate', array($notAfter, $now))
+                            ->orderBy('name', 'asc')
+                            ->get();
+                        break;
+
+                    case 'U20':
+                        $data = Members::select('id', 'name', 'birthDate', 'banned', 'banned_to')
+                            ->whereIn('payed', ['-1', '1'])
+                            ->where('u20', '=', 1)
+                            ->where('birthDate', '>', $now->subYears(20))
+                            ->get();
+                        break;
+
+                    default:
+                        //
+                        break;
+                }
+                break;
+
+            case 'volunteers':
+                //
+                break;
+
+            case 'hemsedal':
+                switch ($selection->nameOfList) {
+                    case 'allPayed':
+                        $data = Hemsedal::select('name', 'phone', 'sweaterSize', 'busHome', 'room')
+                            ->where('allPayed', '1')
+                            ->get();
+                        break;
+
+                    case 'onlyDepositum':
+                        $data = Hemsedal::select('name', 'phone', 'sweaterSize', 'busHome', 'room')
+                            ->where(['depPayed' => '1', 'allPayed' => '0'])
+                            ->get();
+                        break;
+
+                    case 'nothing':
+                        $data = Hemsedal::select('name', 'phone', 'sweaterSize', 'busHome', 'room')
+                            ->OrWhere(['depPayed' => '0', 'allPayed' => '0'])
+                            ->get();
+                        break;
+
+                    case 'everyone':
+                        $data = Hemsedal::select('name', 'phone', 'sweaterSize', 'busHome', 'room')
+                            ->get();
+                        break;
+
+                    default:
+                        //
+                        break;
+                }
+                break;
+
+            default:
+                //
+                break;
         }
-        elseif (strpos($referrer,'members')) {
-            if ($selection == 'GeneralAssembly') {
-                $notAfter = Carbon::now()->subDays(30);
 
-                $data = Members::select('id', 'name', 'created_at', 'payedDate')
-                    ->whereIn('payed', ['-1', '1'])
-                    ->whereNotBetween('payedDate', array($notAfter, $now))
-					->orderBy('name', 'asc')
-                    ->get();
-            }
-            elseif ($selection == 'U20') {
-
-                $date = new DateTime;
-                $date->modify('-20 years');
-                $formatted_date = $date->format('Y-m-d H:i:s');
-
-                $data = Members::select('id', 'name', 'birthDate', 'banned', 'banned_to')
-                    ->whereIn('payed', ['-1', '1'])
-                    ->where('u20','=',1)
-                    ->where('birthDate','>=',$formatted_date)
-                    ->get();
-                //dd($data);
-            }
-
-            return $data;
-        }
-        elseif (strpos($referrer,'volunteers')) {
-            return view('print.volunteers');
-        }
+        return $data;
     }
 }
